@@ -3,10 +3,11 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
+from collections import defaultdict
 
 # Download the 'punkt' resource
-nltk.download('punkt')
-nltk.download('stopwords')
+#nltk.download('punkt')
+#nltk.download('stopwords')
 
 def read_csv_and_store_lines(csv_file):
     data = []
@@ -72,9 +73,17 @@ def create_corpus(data):
         corpus.extend(preprocessed_transcript)
     return corpus
 
+def calculate_token_to_type_ratio(tokens):
+    num_tokens = len(tokens)
+    num_types = len(set(tokens))
+    # Calculate the token-to-type ratio (TTR)
+    ttr = num_types / num_tokens
+    
+    return ttr
+
 if __name__ == "__main__":
-    csv_file1 = "Data/Unstructured1.csv"  
-    csv_file2 = "Data/Unstructured2.csv"
+    csv_file1 = "Data/Structured1.csv"  
+    csv_file2 = "Data/Structured2.csv"
     csv_file_path = "combined.csv"
     
     combine_csv_files(csv_file1, csv_file2, csv_file_path)
@@ -92,6 +101,11 @@ if __name__ == "__main__":
     #    print("=" * 30)  # Separator for better readability
         
     corpus = create_corpus(stored_data)
-    print("Corpus:", corpus)
-    print("Corpus Size:", len(corpus))    
-
+    #print("Corpus:", corpus)
+    print("Corpus Size:", len(corpus))  
+    
+    token_to_type_ratio = calculate_token_to_type_ratio(corpus)
+    print(f"Token-to-Type Ratio (TTR): {token_to_type_ratio:.2f}")
+    
+        
+    
