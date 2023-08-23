@@ -1,13 +1,14 @@
 import pandas as pd
 import nltk
 from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
+from nltk.corpus import stopwords, words
 from nltk.stem import PorterStemmer
 from collections import defaultdict
 
 # Download the 'punkt' resource
 #nltk.download('punkt')
 #nltk.download('stopwords')
+#nltk.download('words')
 
 def read_csv_and_store_lines(csv_file):
     data = []
@@ -55,9 +56,9 @@ def preprocess_text(text):
     # Convert to lowercase
     tokens = [token.lower() for token in tokens]
     
-    # Remove punctuation and stopwords
-    stop_words = set(stopwords.words('english'))
-    tokens = [token for token in tokens if token.isalnum() and token not in stop_words]
+    # Remove punctuation 
+    tokens = [token for token in tokens if token.isalnum()]
+    
     
     # Apply stemming
     stemmer = PorterStemmer()
@@ -67,10 +68,16 @@ def preprocess_text(text):
 
 def create_corpus(data):
     corpus = []
+    english_words = set(words.words())  # Set of English words
+    
     for entry in data:
         transcript = entry["Answer.transcript"]
         preprocessed_transcript = preprocess_text(transcript)
-        corpus.extend(preprocessed_transcript)
+        
+        # Filter out English words
+        filtered_transcript = [word for word in preprocessed_transcript if word not in english_words]
+        
+        corpus.extend(filtered_transcript)
     return corpus
 
 def calculate_token_to_type_ratio(tokens):
