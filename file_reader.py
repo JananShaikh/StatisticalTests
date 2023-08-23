@@ -36,6 +36,17 @@ def read_csv_and_store_lines(csv_file):
     
     return data
 
+def combine_csv_files(file1, file2, output_file):
+    # Read both CSV files into DataFrames
+    df1 = pd.read_csv(file1)
+    df2 = pd.read_csv(file2)
+    
+    # Combine the DataFrames
+    combined_df = pd.concat([df1, df2], ignore_index=True)
+    
+    # Save the combined DataFrame to a new CSV file
+    combined_df.to_csv(output_file, index=False)
+
 def preprocess_text(text):
     # Tokenize the text
     tokens = word_tokenize(text)
@@ -62,7 +73,12 @@ def create_corpus(data):
     return corpus
 
 if __name__ == "__main__":
-    csv_file_path = "Data/Structured2.csv"  # Replace with the path to your CSV file
+    csv_file1 = "Data/Unstructured1.csv"  
+    csv_file2 = "Data/Unstructured2.csv"
+    csv_file_path = "combined.csv"
+    
+    combine_csv_files(csv_file1, csv_file2, csv_file_path)
+    
     stored_data = read_csv_and_store_lines(csv_file_path)
     
     #for entry in stored_data:
