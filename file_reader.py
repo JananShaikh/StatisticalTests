@@ -3,7 +3,9 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords, words
 from nltk.stem import PorterStemmer
-from collections import defaultdict
+from collections import defaultdict, Counter
+import matplotlib.pyplot as plt
+import numpy as np
 
 # Download the 'punkt' resource
 #nltk.download('punkt')
@@ -56,8 +58,9 @@ def preprocess_text(text):
     # Convert to lowercase
     tokens = [token.lower() for token in tokens]
     
-    # Remove punctuation 
-    tokens = [token for token in tokens if token.isalnum()]
+    # Remove punctuation and stopwords
+    stop_words = set(stopwords.words('english')) # This is a problem
+    tokens = [token for token in tokens if token.isalnum() and token not in stop_words]
     
     
     # Apply stemming
@@ -87,6 +90,32 @@ def calculate_token_to_type_ratio(tokens):
     ttr = num_types / num_tokens
     
     return ttr
+    
+def calculate_zipfs_law(tokens):   
+    # Frequency calculation
+    word_counts = Counter(tokens)
+     
+    # Sort words by frequency in descending order
+    sorted_words = sorted(word_counts.items(), key=lambda item: item[1], reverse=True)
+    
+    # Extract ranks and frequencies for plotting
+    ranks = np.arange(1, len(sorted_words) + 1)
+    frequencies = [count for word, count in sorted_words]
+    
+    # Log-log plot
+    plt.figure(figsize=(10, 6))
+    plt.loglog(ranks, frequencies, marker='o', linestyle='None')
+    plt.xlabel('Rank')
+    plt.ylabel('Frequency')
+    plt.title("Zipf's Law")
+    plt.grid(True)
+    
+    # Save the plot as an image file (e.g., PNG) 
+    #plt.savefig('structured.png')  # for structured uncomment
+    #plt.savefig('unstructured.png') # for unstructured uncomment
+    
+    # Close the plot (optional)
+    plt.close()
 
 if __name__ == "__main__":
     csv_file1 = "Data/Structured1.csv"  
@@ -113,6 +142,8 @@ if __name__ == "__main__":
     
     token_to_type_ratio = calculate_token_to_type_ratio(corpus)
     print(f"Token-to-Type Ratio (TTR): {token_to_type_ratio:.2f}")
+    
+    calculate_zipfs_law(corpus)
     
         
     
