@@ -118,8 +118,11 @@ def calculate_zipfs_law(tokens):
     plt.close()
 
 if __name__ == "__main__":
+    # Uncomment as needed
     csv_file1 = "Data/Structured1.csv"  
     csv_file2 = "Data/Structured2.csv"
+    #csv_file1 = "Data/Unstructured1.csv"  
+    #csv_file2 = "Data/Unstructured2.csv"
     csv_file_path = "combined.csv"
     
     combine_csv_files(csv_file1, csv_file2, csv_file_path)
