@@ -1,7 +1,5 @@
 import pandas as pd
-import sklearn
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+import textdistance
 
 def read_csv_and_store_lines(csv_file):
     data = []
@@ -31,12 +29,6 @@ def read_csv_and_store_lines(csv_file):
     
     return data
 
-def calculate_similarity(transcripts):
-    tfidf_vectorizer = TfidfVectorizer()
-    tfidf_matrix = tfidf_vectorizer.fit_transform(transcripts)
-    similarity_matrix = cosine_similarity(tfidf_matrix)
-    return similarity_matrix
-
 if __name__ == "__main__":
     csv_file_path = "Data/Structured1.csv"  # Replace with the path to your CSV file
     stored_data = read_csv_and_store_lines(csv_file_path)
@@ -52,9 +44,15 @@ if __name__ == "__main__":
         audio_url_to_transcripts[audio_url].append(transcript)
     
     for audio_url, transcripts in audio_url_to_transcripts.items():
-        similarity_matrix = calculate_similarity(transcripts)
         print(f"Audio URL: {audio_url}")
-        print("Similarity Matrix:")
-        print(similarity_matrix)
-        print("=" * 30)
+        
+        for i in range(len(transcripts)):
+            for j in range(i + 1, len(transcripts)):
+                transcript_1 = transcripts[i]
+                transcript_2 = transcripts[j]
+                
+                levenshtein_distance = textdistance.levenshtein(transcript_1, transcript_2)
+                similarity = 1 - (levenshtein_distance / max(len(transcript_1), len(transcript_2)))
+                
+                print(f"Similarity between Transcript {i+1} and Transcript {j+1}: {similarity:.4f}")
 
