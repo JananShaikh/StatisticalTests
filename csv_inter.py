@@ -1,6 +1,11 @@
 import pandas as pd
 import textdistance
 
+def extract_audio_name(url):
+    # Extract the part after the last '/' and before '.mp3'
+    audio_name = url.split("/")[-1].split(".mp3")[0]
+    return audio_name
+
 def read_csv_and_store_lines(csv_file):
     data = []
     
@@ -43,16 +48,27 @@ if __name__ == "__main__":
             audio_url_to_transcripts[audio_url] = []
         audio_url_to_transcripts[audio_url].append(transcript)
     
-    for audio_url, transcripts in audio_url_to_transcripts.items():
-        print(f"Audio URL: {audio_url}")
+    output_filename = "similarity_results.txt"
+    
+    with open(output_filename, "w") as output_file:
+        for audio_url, transcripts in audio_url_to_transcripts.items():
+            audio_name = extract_audio_name(audio_url)
+            print(f"Audio URL: {audio_name}")
         
-        for i in range(len(transcripts)):
-            for j in range(i + 1, len(transcripts)):
-                transcript_1 = transcripts[i]
-                transcript_2 = transcripts[j]
+            output_file.write(f"Audio URL: {audio_name}")   
+            output_file.write("\n")
+            
+            for i in range(len(transcripts)):
+                for j in range(i + 1, len(transcripts)):
+                    transcript_1 = transcripts[i]
+                    transcript_2 = transcripts[j]
                 
-                levenshtein_distance = textdistance.levenshtein(transcript_1, transcript_2)
-                similarity = 1 - (levenshtein_distance / max(len(transcript_1), len(transcript_2)))
+                    levenshtein_distance = textdistance.levenshtein(transcript_1, transcript_2)
+                    similarity = 1 - (levenshtein_distance / max(len(transcript_1), len(transcript_2)))
                 
-                print(f"Similarity between Transcript {i+1} and Transcript {j+1}: {similarity:.4f}")
+                    print(f"Similarity between Transcript {i+1} and Transcript {j+1}: {similarity:.4f}")
+                    output_file.write(f"Similarity between Transcript {i+1} and Transcript {j+1}: {similarity:.4f}\n")
+            output_file.write("\n")        
+                    
+                    
 
