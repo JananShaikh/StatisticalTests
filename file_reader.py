@@ -111,7 +111,7 @@ def calculate_zipfs_law(tokens):
     plt.grid(True)
     
     # Save the plot as an image file (e.g., PNG) 
-    #plt.savefig('structured.png')  # for structured uncomment
+    plt.savefig('structured.png')  # for structured uncomment
     #plt.savefig('unstructured.png') # for unstructured uncomment
     
     # Close the plot (optional)

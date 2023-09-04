@@ -1,5 +1,30 @@
 import pandas as pd
 import textdistance
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import words
+
+#nltk.download('punkt')
+#nltk.download('words')
+
+def preprocess_text(text):
+    # Tokenize the text into words
+    tokens = word_tokenize(text)
+    
+    # Filter out non-English words
+    #english_words = set(words.words())
+    #english_tokens = [token for token in tokens if token.lower() not in english_words]
+    
+    # Convert to lowercase
+    tokens = [token.lower() for token in tokens]
+    
+    # Remove punctuation 
+    tokens = [token for token in tokens if token.isalnum()]
+    
+    # Join the filtered tokens to create the preprocessed text
+    preprocessed_text = ' '.join(tokens)
+    
+    return preprocessed_text
 
 def combine_csv_files(file1, file2, output_file):
     # Read both CSV files into DataFrames
@@ -48,6 +73,8 @@ def read_csv_and_store_lines(csv_file):
 if __name__ == "__main__":
     csv_file1 = "Data/Structured1.csv"  
     csv_file2 = "Data/Structured2.csv"
+    #csv_file1 = "Data/Unstructured1.csv"  
+    #csv_file2 = "Data/Unstructured2.csv"
     csv_file_path = "combined.csv"
     
     combine_csv_files(csv_file1, csv_file2, csv_file_path)
@@ -60,9 +87,12 @@ if __name__ == "__main__":
         audio_url = entry["Input.audio_url"]
         transcript = entry["Answer.transcript"]
         
+        # Preprocess the transcript text
+        preprocessed_transcript = preprocess_text(transcript)
+        #print(preprocessed_transcript)
         if audio_url not in audio_url_to_transcripts:
             audio_url_to_transcripts[audio_url] = []
-        audio_url_to_transcripts[audio_url].append(transcript)
+        audio_url_to_transcripts[audio_url].append(preprocessed_transcript)
     
     output_filename = "similarity_results.txt"
     
