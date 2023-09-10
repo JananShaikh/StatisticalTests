@@ -87,7 +87,7 @@ def calculate_token_to_type_ratio(tokens):
     num_tokens = len(tokens)
     num_types = len(set(tokens))
     # Calculate the token-to-type ratio (TTR)
-    ttr = num_types / num_tokens
+    ttr =  num_tokens / num_types 
     
     return ttr
     
@@ -140,13 +140,15 @@ if __name__ == "__main__":
     #    print("=" * 30)  # Separator for better readability
         
     corpus = create_corpus(stored_data)
-    #print("Corpus:", corpus)
+    print("Corpus:", corpus)
     print("Corpus Size:", len(corpus))  
     
     token_to_type_ratio = calculate_token_to_type_ratio(corpus)
     print(f"Token-to-Type Ratio (TTR): {token_to_type_ratio:.2f}")
     
     calculate_zipfs_law(corpus)
+    
+    
     
         
     
