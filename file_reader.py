@@ -134,6 +134,7 @@ def least_common_words(words, num_words=10):
     least_common = word_counts.most_common()[:-num_words-1:-1]
     
     return least_common
+    
 
 if __name__ == "__main__":
     # Uncomment as needed
@@ -179,7 +180,8 @@ if __name__ == "__main__":
         print(f'{word}: {count}')    
         
         
-        
+    print("Number of distinct words:")
+    print(len(set(corpus)))    
     
         
     
