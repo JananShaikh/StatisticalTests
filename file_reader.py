@@ -118,7 +118,6 @@ def calculate_zipfs_law(tokens):
     plt.close()
 
 def most_common_words(words, num_words=10):
-    
     # Count the occurrences of each word
     word_counts = Counter(words)
     
@@ -127,6 +126,14 @@ def most_common_words(words, num_words=10):
     
     return most_common
 
+def least_common_words(words, num_words=10):
+    # Count the occurrences of each word
+    word_counts = Counter(words)
+    
+    # Get the least common words by sorting in ascending order of frequencies
+    least_common = word_counts.most_common()[:-num_words-1:-1]
+    
+    return least_common
 
 if __name__ == "__main__":
     # Uncomment as needed
@@ -161,9 +168,18 @@ if __name__ == "__main__":
     
     result = most_common_words(corpus, num_words=5)
     
-    print("Most appeared words\n")
+    print("Most appeared words")
     for word, count in result:
         print(f'{word}: {count}')
+        
+    result = least_common_words(corpus, num_words=5)
+    
+    print("Most appeared words")
+    for word, count in result:
+        print(f'{word}: {count}')    
+        
+        
+        
     
         
     
