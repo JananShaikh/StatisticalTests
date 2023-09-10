@@ -117,6 +117,17 @@ def calculate_zipfs_law(tokens):
     # Close the plot (optional)
     plt.close()
 
+def most_common_words(words, num_words=10):
+    
+    # Count the occurrences of each word
+    word_counts = Counter(words)
+    
+    # Get the most common words
+    most_common = word_counts.most_common(num_words)
+    
+    return most_common
+
+
 if __name__ == "__main__":
     # Uncomment as needed
     csv_file1 = "Data/Structured1.csv"  
@@ -140,7 +151,7 @@ if __name__ == "__main__":
     #    print("=" * 30)  # Separator for better readability
         
     corpus = create_corpus(stored_data)
-    print("Corpus:", corpus)
+    #print("Corpus:", corpus)
     print("Corpus Size:", len(corpus))  
     
     token_to_type_ratio = calculate_token_to_type_ratio(corpus)
@@ -148,7 +159,11 @@ if __name__ == "__main__":
     
     calculate_zipfs_law(corpus)
     
+    result = most_common_words(corpus, num_words=5)
     
+    print("Most appeared words\n")
+    for word, count in result:
+        print(f'{word}: {count}')
     
         
     
